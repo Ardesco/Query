@@ -10,9 +10,9 @@ Query
 
 A query object designed to make page objects easier to manage
 
-## How do I get started?
+## How do I get started?
 
-It's nice and simple, added the following entry to your POM:
+It's nice and simple, add the following entry to your POM:
 
     <dependency>
         <groupId>com.lazerycode.selenium</groupId>
@@ -25,7 +25,7 @@ Then just create a basic query object in your page object:
 
     Query query = newQuery(By.id("foo");
     
-Do you want to have different locators for different browsers?  Once you have set the default locatir you can add overrides for different browsers:
+Do you want to have different locators for different browsers?  Once you have set the default locator you can add overrides for different browsers:
 
     query.addAlternateLocator(BrowserType.GOOGLECHROME, By.id("bar");
     query.addAlternateLocator("custom_driver", By.id("custom");
@@ -34,7 +34,7 @@ Once you have set custom locators the query object will check the desired capabi
     
 ## OK, I have a query object. Now what?    
 
-It's designed to return certain element types that you can use in yoru page objects, the various types are shown below:
+It's designed to return certain element types that you can use in your page objects, the various types are shown below:
 
     WebElement element = query.findWebElement();
     List<WebElement> elementList = query.findWebElements();
