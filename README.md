@@ -17,7 +17,7 @@ It's nice and simple, add the following entry to your POM:
     <dependency>
         <groupId>com.lazerycode.selenium</groupId>
         <artifactId>query</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
         <scope>test</scope>
     </dependency>
     
