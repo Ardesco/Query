@@ -4,7 +4,7 @@ Query
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![Build Status](https://travis-ci.org/Ardesco/Query.svg?branch=master)](https://travis-ci.org/Ardesco/Query)
 [![codecov](https://codecov.io/gh/ardesco/query/branch/master/graph/badge.svg)](https://codecov.io/gh/ardesco/query)
-![GitHub release](https://img.shields.io/github/release/ardesco/query.svg)
+[![GitHub release](https://img.shields.io/github/release/Ardesco/Query/all.svg?colorB=brightgreen)](https://github.com/Ardesco/Query)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.lazerycode.selenium/query/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.lazerycode.selenium/query)
 [![Javadocs](http://www.javadoc.io/badge/com.lazerycode.selenium/query.svg)](http://www.javadoc.io/doc/com.lazerycode.selenium/query)
 
