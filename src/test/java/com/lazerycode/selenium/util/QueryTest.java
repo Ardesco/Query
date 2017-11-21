@@ -153,8 +153,16 @@ public class QueryTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void findMobileElementsThrowsUnsupportedOperationExceptionIfPlatformIsNotAMobileType() {
+    public void findMobileElementThrowsUnsupportedOperationExceptionIfPlatformIsAGenericName() {
         initQueryObject();
+
+        Query query = new Query(DEFAULT_LOCATOR);
+        query.findMobileElement();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void findMobileElementsThrowsUnsupportedOperationExceptionIfPlatformIsNotAMobileType() {
+        initQueryWithGenericAutomationNameObject();
 
         Query query = new Query(DEFAULT_LOCATOR);
         query.findMobileElements();
@@ -183,6 +191,20 @@ public class QueryTest {
         when(mockedWebDriver.getCapabilities()).thenReturn(mockedCapabilities);
         when(mockedWebDriver.findElement(DEFAULT_LOCATOR)).thenReturn(MOCKED_MOBILE_ELEMENT_FOR_DEFAULT);
         when(mockedWebDriver.findElements(DEFAULT_LOCATOR)).thenReturn(MOCKED_MOBILE_ELEMENT_LIST_FOR_DEFAULT);
+
+        Query.initQueryObjects(mockedWebDriver);
+    }
+
+    private void initQueryWithGenericAutomationNameObject() {
+        Capabilities mockedCapabilities = mock(Capabilities.class);
+        when(mockedCapabilities.getBrowserName()).thenReturn(BrowserType.GOOGLECHROME);
+        when(mockedCapabilities.getPlatform()).thenReturn(Platform.YOSEMITE);
+        when(mockedCapabilities.getCapability("automationName")).thenReturn("Generic");
+
+        RemoteWebDriver mockedWebDriver = mock(RemoteWebDriver.class);
+        when(mockedWebDriver.getCapabilities()).thenReturn(mockedCapabilities);
+        when(mockedWebDriver.findElement(DEFAULT_LOCATOR)).thenReturn(MOCKED_WEB_ELEMENT_FOR_DEFAULT);
+        when(mockedWebDriver.findElements(DEFAULT_LOCATOR)).thenReturn(MOCKED_WEB_ELEMENT_LIST_FOR_DEFAULT);
 
         Query.initQueryObjects(mockedWebDriver);
     }
