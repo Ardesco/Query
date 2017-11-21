@@ -1,9 +1,13 @@
 package com.lazerycode.selenium.util;
 
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.remote.MobilePlatform;
 import org.junit.After;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -22,9 +26,9 @@ public class QueryTest {
     private static final By CHROME_LOCATOR = By.id("bar");
     private static final By FIREFOX_LOCATOR = By.id("fire");
     private static final WebElement MOCKED_WEB_ELEMENT_FOR_DEFAULT = mock(WebElement.class);
-    private static final WebElement MOCKED_WEB_ELEMENT_FOR_CHROME = mock(WebElement.class);
+    private static final MobileElement MOCKED_MOBILE_ELEMENT_FOR_DEFAULT = mock(MobileElement.class);
     private static final List<WebElement> MOCKED_WEB_ELEMENT_LIST_FOR_DEFAULT = Collections.singletonList(MOCKED_WEB_ELEMENT_FOR_DEFAULT);
-    private static final List<WebElement> MOCKED_WEB_ELEMENT_LIST_FOR_CHROME = Collections.singletonList(MOCKED_WEB_ELEMENT_FOR_CHROME);
+    private static final List<WebElement> MOCKED_MOBILE_ELEMENT_LIST_FOR_DEFAULT = Collections.singletonList(MOCKED_MOBILE_ELEMENT_FOR_DEFAULT);
 
     @After
     public void teardown() {
@@ -101,7 +105,7 @@ public class QueryTest {
     }
 
     @Test
-    public void returnsDefaultWebElement() {
+    public void returnsWebElement() {
         initQueryObject();
 
         Query query = new Query(DEFAULT_LOCATOR);
@@ -111,31 +115,7 @@ public class QueryTest {
     }
 
     @Test
-    public void returnsChromeWebElementIfChromeLocatorSet() {
-        initQueryObject();
-
-        Query query = new Query(DEFAULT_LOCATOR);
-        query.addAlternateLocator(BrowserType.GOOGLECHROME, CHROME_LOCATOR);
-        WebElement element = query.findWebElement();
-
-        assertThat(element).isNotEqualTo(MOCKED_WEB_ELEMENT_FOR_DEFAULT);
-        assertThat(element).isEqualTo(MOCKED_WEB_ELEMENT_FOR_CHROME);
-    }
-
-    @Test
-    public void returnsDefaultWebElementIfDifferentBrowserIsSet() {
-        initQueryObject();
-
-        Query query = new Query(DEFAULT_LOCATOR);
-        query.addAlternateLocator(BrowserType.FIREFOX, FIREFOX_LOCATOR);
-        WebElement element = query.findWebElement();
-
-        assertThat(element).isNotEqualTo(MOCKED_WEB_ELEMENT_FOR_CHROME);
-        assertThat(element).isEqualTo(MOCKED_WEB_ELEMENT_FOR_DEFAULT);
-    }
-
-    @Test
-    public void returnsDefaultWebElementList() {
+    public void returnsWebElementList() {
         initQueryObject();
 
         Query query = new Query(DEFAULT_LOCATOR);
@@ -145,39 +125,64 @@ public class QueryTest {
     }
 
     @Test
-    public void returnsChromeWebElementListIfChromeLocatorSet() {
-        initQueryObject();
+    public void returnsMobileElement() {
+        initQueryObjectWithAppiumAndroid();
 
         Query query = new Query(DEFAULT_LOCATOR);
-        query.addAlternateLocator(BrowserType.GOOGLECHROME, CHROME_LOCATOR);
-        List<WebElement> element = query.findWebElements();
+        MobileElement element = query.findMobileElement();
 
-        assertThat(element).isNotEqualTo(MOCKED_WEB_ELEMENT_LIST_FOR_DEFAULT);
-        assertThat(element).isEqualTo(MOCKED_WEB_ELEMENT_LIST_FOR_CHROME);
+        assertThat(element).isEqualTo(MOCKED_MOBILE_ELEMENT_FOR_DEFAULT);
     }
 
     @Test
-    public void returnsDefaultWebElementListIfDifferentBrowserIsSet() {
+    public void returnsMobileElementList() {
+        initQueryObjectWithAppiumAndroid();
+
+        Query query = new Query(DEFAULT_LOCATOR);
+        List<MobileElement> element = query.findMobileElements();
+
+        assertThat(element).isEqualTo(MOCKED_MOBILE_ELEMENT_LIST_FOR_DEFAULT);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void findMobileElementThrowsUnsupportedOperationExceptionIfPlatformIsNotAMobileType() {
         initQueryObject();
 
         Query query = new Query(DEFAULT_LOCATOR);
-        query.addAlternateLocator(BrowserType.FIREFOX, FIREFOX_LOCATOR);
-        List<WebElement> element = query.findWebElements();
+        query.findMobileElement();
+    }
 
-        assertThat(element).isNotEqualTo(MOCKED_WEB_ELEMENT_LIST_FOR_CHROME);
-        assertThat(element).isEqualTo(MOCKED_WEB_ELEMENT_LIST_FOR_DEFAULT);
+    @Test(expected = UnsupportedOperationException.class)
+    public void findMobileElementsThrowsUnsupportedOperationExceptionIfPlatformIsNotAMobileType() {
+        initQueryObject();
+
+        Query query = new Query(DEFAULT_LOCATOR);
+        query.findMobileElements();
     }
 
     private void initQueryObject() {
         Capabilities mockedCapabilities = mock(Capabilities.class);
         when(mockedCapabilities.getBrowserName()).thenReturn(BrowserType.GOOGLECHROME);
+        when(mockedCapabilities.getPlatform()).thenReturn(Platform.YOSEMITE);
 
         RemoteWebDriver mockedWebDriver = mock(RemoteWebDriver.class);
         when(mockedWebDriver.getCapabilities()).thenReturn(mockedCapabilities);
         when(mockedWebDriver.findElement(DEFAULT_LOCATOR)).thenReturn(MOCKED_WEB_ELEMENT_FOR_DEFAULT);
-        when(mockedWebDriver.findElement(CHROME_LOCATOR)).thenReturn(MOCKED_WEB_ELEMENT_FOR_CHROME);
         when(mockedWebDriver.findElements(DEFAULT_LOCATOR)).thenReturn(MOCKED_WEB_ELEMENT_LIST_FOR_DEFAULT);
-        when(mockedWebDriver.findElements(CHROME_LOCATOR)).thenReturn(MOCKED_WEB_ELEMENT_LIST_FOR_CHROME);
+
+        Query.initQueryObjects(mockedWebDriver);
+    }
+
+    private void initQueryObjectWithAppiumAndroid() {
+        Capabilities mockedCapabilities = mock(Capabilities.class);
+        when(mockedCapabilities.getBrowserName()).thenReturn("");
+        when(mockedCapabilities.getPlatform()).thenReturn(Platform.fromString(MobilePlatform.ANDROID));
+        when(mockedCapabilities.getCapability("automationName")).thenReturn("Appium");
+
+        RemoteWebDriver mockedWebDriver = mock(AndroidDriver.class);
+        when(mockedWebDriver.getCapabilities()).thenReturn(mockedCapabilities);
+        when(mockedWebDriver.findElement(DEFAULT_LOCATOR)).thenReturn(MOCKED_MOBILE_ELEMENT_FOR_DEFAULT);
+        when(mockedWebDriver.findElements(DEFAULT_LOCATOR)).thenReturn(MOCKED_MOBILE_ELEMENT_LIST_FOR_DEFAULT);
 
         Query.initQueryObjects(mockedWebDriver);
     }

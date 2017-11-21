@@ -57,6 +57,7 @@
         <!--Dependency Versions-->
         <selenium.version>3.7.1</selenium.version>
         <assertj-core.version>3.8.0</assertj-core.version>
+        <java-client.version>5.0.4</java-client.version>
         <junit.version>4.12</junit.version>
         <!--Plugin Versions-->
         <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
@@ -84,6 +85,11 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>${java-client.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

@@ -43,6 +43,8 @@ It's designed to return certain element types that you can use in your page obje
     WebElement element = query.findWebElement();
     List<WebElement> elementList = query.findWebElements();
     Select selectElement = query.findSelectElement();
+    MobileElement mobileElement = query.findMobileElement();
+    List<MobileElement> mobileElementList = query.findMobileElements();
     
 Ok, that's kind of useful, anything else?
 
