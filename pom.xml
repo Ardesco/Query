@@ -21,6 +21,35 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <id>Ardesco</id>
+            <name>Mark Collin</name>
+            <roles>
+                <role>Owner</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/Ardesco/Query/issues</url>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:git:git@github.com:Ardesco/Query.git</connection>
+        <developerConnection>scm:git:git@github.com:Ardesco/Query.git</developerConnection>
+        <url>https://github.com/Ardesco/Query</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
