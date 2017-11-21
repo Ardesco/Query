@@ -12,7 +12,16 @@ A query object designed to make page objects easier to manage
 
 ## How do I get started?
 
-It's simple to start with, just create a basic query object in your page object:
+It's nice and simple, added the following entry to your POM:
+
+    <dependency>
+        <groupId>com.lazerycode.selenium</groupId>
+        <artifactId>query</artifactId>
+        <version>1.0.0</version>
+        <scope>test</scope>
+    </dependency>
+
+Then just create a basic query object in your page object:
 
     Query query = newQuery(By.id("foo");
     
@@ -38,4 +47,4 @@ Have you ever got frustrated trying to get locators out of element to use in exp
     WebDriverWait wait = new WebDriverWait(driver, 15, 100);
     wait.until(ExpectedConditions.visibilityOfElementLocated(query.locator));
     
-Thats all for now, if you can think of any useful additions just raise an issue.    
+That's all for now, if you can think of any useful additions just raise an issue.    
