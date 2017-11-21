@@ -20,8 +20,12 @@ It's nice and simple, add the following entry to your POM:
         <version>1.0.0</version>
         <scope>test</scope>
     </dependency>
+    
+When you create your driver object you will need let the Query object know about it like this:
 
-Then just create a basic query object in your page object:
+    Query.initQueryObjects(driver);    
+
+Then just create a basic query object in your page object when you want to use it:
 
     Query query = newQuery(By.id("foo");
     
