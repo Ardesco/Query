@@ -17,17 +17,21 @@ It's nice and simple, add the following entry to your POM:
     <dependency>
         <groupId>com.lazerycode.selenium</groupId>
         <artifactId>query</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.0</version>
         <scope>test</scope>
     </dependency>
     
-When you create your driver object you will need let the Query object know about it like this:
-
-    Query.initQueryObjects(driver);    
-
 Then just create a basic query object in your page object when you want to use it:
 
-    Query query = newQuery(By.id("foo");
+    Query query = newQuery(By.id("foo"));
+    
+Then when you create your driver object you will need let the Query object know about it like this:
+    
+    query.initQueryObjects(driver);
+    
+Or if you already have a driver object you can just do it all in one go:
+
+    Query query = newQuery(By.id("foo"), driver);    
     
 Do you want to have different locators for different browsers?  Once you have set the default locator you can add overrides for different browsers:
 
