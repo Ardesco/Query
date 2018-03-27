@@ -12,26 +12,34 @@ import java.util.List;
 
 public class Query {
 
-    private static RemoteWebDriver driver;
-    private static String currentBrowserName;
-    private static boolean isAppium;
+    private RemoteWebDriver driver;
+    private String currentBrowserName;
+    private boolean isAppium;
 
     /**
      * Set a static driver object that wil be used for all instances of Query
      *
      * @param driverObject
      */
-    public static void initQueryObjects(RemoteWebDriver driverObject) {
+    public Query initQueryObject(RemoteWebDriver driverObject) {
         driver = driverObject;
         if (null != driver) {
             currentBrowserName = driver.getCapabilities().getBrowserName();
             Object automationName = driver.getCapabilities().getCapability("automationName");
             isAppium = (null != automationName) && automationName.toString().toLowerCase().equals("appium");
         }
+
+        return this;
     }
 
     private final By defaultLocator;
     private HashMap<String, By> customLocators = new HashMap<>();
+
+    public Query(By defaultLocator, RemoteWebDriver driver) {
+        if (null == defaultLocator) throw new NullPointerException("Query locator cannot be null!");
+        this.defaultLocator = defaultLocator;
+        initQueryObject(driver);
+    }
 
     public Query(By defaultLocator) {
         if (null == defaultLocator) throw new NullPointerException("Query locator cannot be null!");
@@ -128,7 +136,7 @@ public class Query {
 
     private void checkDriverIsSet() {
         if (null == driver) {
-            throw new IllegalStateException("Driver object has not been set... You must call 'Query.initQueryObjects(driver);'!");
+            throw new IllegalStateException("Driver object has not been set... You must call 'Query.initQueryObject(driver);'!");
         }
     }
 }

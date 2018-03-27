@@ -30,11 +30,6 @@ public class QueryTest {
     private static final List<WebElement> MOCKED_WEB_ELEMENT_LIST_FOR_DEFAULT = Collections.singletonList(MOCKED_WEB_ELEMENT_FOR_DEFAULT);
     private static final List<WebElement> MOCKED_MOBILE_ELEMENT_LIST_FOR_DEFAULT = Collections.singletonList(MOCKED_MOBILE_ELEMENT_FOR_DEFAULT);
 
-    @After
-    public void teardown() {
-        Query.initQueryObjects(null);
-    }
-
     @Test(expected = NullPointerException.class)
     public void thowsErrorIfInstantiatedWithNull() {
         new Query(null);
@@ -66,10 +61,10 @@ public class QueryTest {
 
     @Test
     public void returnsAValidSelectElement() {
-        initQueryObject();
         when(MOCKED_WEB_ELEMENT_FOR_DEFAULT.getTagName()).thenReturn("select");
 
         Query query = new Query(DEFAULT_LOCATOR);
+        initQueryObject(query);
         Select element = query.findSelectElement();
 
         assertThat(element).isInstanceOf(Select.class);
@@ -77,18 +72,18 @@ public class QueryTest {
 
     @Test
     public void returnsDefaultLocator() {
-        initQueryObject();
 
         Query query = new Query(DEFAULT_LOCATOR);
+        initQueryObject(query);
 
         assertThat(query.locator()).isEqualTo(DEFAULT_LOCATOR);
     }
 
     @Test
     public void returnsChromeLocatorIfSet() {
-        initQueryObject();
 
         Query query = new Query(DEFAULT_LOCATOR);
+        initQueryObject(query);
         query.addAlternateLocator(BrowserType.GOOGLECHROME, CHROME_LOCATOR);
 
         assertThat(query.locator()).isEqualTo(CHROME_LOCATOR);
@@ -96,9 +91,9 @@ public class QueryTest {
 
     @Test
     public void returnsDefaultLocatorIfDifferentBrowserIsSet() {
-        initQueryObject();
 
         Query query = new Query(DEFAULT_LOCATOR);
+        initQueryObject(query);
         query.addAlternateLocator(BrowserType.FIREFOX, FIREFOX_LOCATOR);
 
         assertThat(query.locator()).isEqualTo(DEFAULT_LOCATOR);
@@ -106,9 +101,9 @@ public class QueryTest {
 
     @Test
     public void returnsWebElement() {
-        initQueryObject();
 
         Query query = new Query(DEFAULT_LOCATOR);
+        initQueryObject(query);
         WebElement element = query.findWebElement();
 
         assertThat(element).isEqualTo(MOCKED_WEB_ELEMENT_FOR_DEFAULT);
@@ -116,9 +111,9 @@ public class QueryTest {
 
     @Test
     public void returnsWebElementList() {
-        initQueryObject();
 
         Query query = new Query(DEFAULT_LOCATOR);
+        initQueryObject(query);
         List<WebElement> element = query.findWebElements();
 
         assertThat(element).isEqualTo(MOCKED_WEB_ELEMENT_LIST_FOR_DEFAULT);
@@ -126,9 +121,9 @@ public class QueryTest {
 
     @Test
     public void returnsMobileElement() {
-        initQueryObjectWithAppiumAndroid();
 
         Query query = new Query(DEFAULT_LOCATOR);
+        initQueryObjectWithAppiumAndroid(query);
         MobileElement element = query.findMobileElement();
 
         assertThat(element).isEqualTo(MOCKED_MOBILE_ELEMENT_FOR_DEFAULT);
@@ -136,9 +131,9 @@ public class QueryTest {
 
     @Test
     public void returnsMobileElementList() {
-        initQueryObjectWithAppiumAndroid();
 
         Query query = new Query(DEFAULT_LOCATOR);
+        initQueryObjectWithAppiumAndroid(query);
         List<MobileElement> element = query.findMobileElements();
 
         assertThat(element).isEqualTo(MOCKED_MOBILE_ELEMENT_LIST_FOR_DEFAULT);
@@ -146,29 +141,29 @@ public class QueryTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void findMobileElementThrowsUnsupportedOperationExceptionIfPlatformIsNotAMobileType() {
-        initQueryObject();
 
         Query query = new Query(DEFAULT_LOCATOR);
+        initQueryObject(query);
         query.findMobileElement();
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void findMobileElementThrowsUnsupportedOperationExceptionIfPlatformIsAGenericName() {
-        initQueryObject();
 
         Query query = new Query(DEFAULT_LOCATOR);
+        initQueryObject(query);
         query.findMobileElement();
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void findMobileElementsThrowsUnsupportedOperationExceptionIfPlatformIsNotAMobileType() {
-        initQueryWithGenericAutomationNameObject();
 
         Query query = new Query(DEFAULT_LOCATOR);
+        initQueryWithGenericAutomationNameObject(query);
         query.findMobileElements();
     }
 
-    private void initQueryObject() {
+    private void initQueryObject(Query queryObject) {
         Capabilities mockedCapabilities = mock(Capabilities.class);
         when(mockedCapabilities.getBrowserName()).thenReturn(BrowserType.GOOGLECHROME);
         when(mockedCapabilities.getPlatform()).thenReturn(Platform.YOSEMITE);
@@ -178,10 +173,10 @@ public class QueryTest {
         when(mockedWebDriver.findElement(DEFAULT_LOCATOR)).thenReturn(MOCKED_WEB_ELEMENT_FOR_DEFAULT);
         when(mockedWebDriver.findElements(DEFAULT_LOCATOR)).thenReturn(MOCKED_WEB_ELEMENT_LIST_FOR_DEFAULT);
 
-        Query.initQueryObjects(mockedWebDriver);
+        queryObject.initQueryObject(mockedWebDriver);
     }
 
-    private void initQueryObjectWithAppiumAndroid() {
+    private void initQueryObjectWithAppiumAndroid(Query queryObject) {
         Capabilities mockedCapabilities = mock(Capabilities.class);
         when(mockedCapabilities.getBrowserName()).thenReturn("");
         when(mockedCapabilities.getPlatform()).thenReturn(Platform.fromString(MobilePlatform.ANDROID));
@@ -192,10 +187,10 @@ public class QueryTest {
         when(mockedWebDriver.findElement(DEFAULT_LOCATOR)).thenReturn(MOCKED_MOBILE_ELEMENT_FOR_DEFAULT);
         when(mockedWebDriver.findElements(DEFAULT_LOCATOR)).thenReturn(MOCKED_MOBILE_ELEMENT_LIST_FOR_DEFAULT);
 
-        Query.initQueryObjects(mockedWebDriver);
+        queryObject.initQueryObject(mockedWebDriver);
     }
 
-    private void initQueryWithGenericAutomationNameObject() {
+    private void initQueryWithGenericAutomationNameObject(Query queryObject) {
         Capabilities mockedCapabilities = mock(Capabilities.class);
         when(mockedCapabilities.getBrowserName()).thenReturn(BrowserType.GOOGLECHROME);
         when(mockedCapabilities.getPlatform()).thenReturn(Platform.YOSEMITE);
@@ -206,6 +201,6 @@ public class QueryTest {
         when(mockedWebDriver.findElement(DEFAULT_LOCATOR)).thenReturn(MOCKED_WEB_ELEMENT_FOR_DEFAULT);
         when(mockedWebDriver.findElements(DEFAULT_LOCATOR)).thenReturn(MOCKED_WEB_ELEMENT_LIST_FOR_DEFAULT);
 
-        Query.initQueryObjects(mockedWebDriver);
+        queryObject.initQueryObject(mockedWebDriver);
     }
 }
