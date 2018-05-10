@@ -59,6 +59,7 @@
         <assertj-core.version>3.8.0</assertj-core.version>
         <java-client.version>5.0.4</java-client.version>
         <junit.version>4.12</junit.version>
+        <mockito-core.version>2.11.0</mockito-core.version>
         <!--Plugin Versions-->
         <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
@@ -95,11 +96,13 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>2.11.0</version>
+            <version>${mockito-core.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
