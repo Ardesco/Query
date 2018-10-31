@@ -35,8 +35,8 @@ Or if you already have a driver object you can just do it all in one go:
     
 Do you want to have different locators for different browsers?  You can add overrides for different browsers:
 
-    query.addAlternateLocator(BrowserType.GOOGLECHROME, By.id("bar");
-    query.addAlternateLocator("custom_driver", By.id("custom");
+    query.addAlternateLocator(BrowserType.GOOGLECHROME, By.id("bar")
+       .addAlternateLocator("custom_driver", By.id("custom");
     
 Once you have set custom locators the query object will check the desired capabilities of the current instantiated driver and just use the appropriate locator    
     
