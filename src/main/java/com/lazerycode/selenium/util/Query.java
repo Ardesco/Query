@@ -35,15 +35,16 @@ public class Query {
      * <p>
      * Any actions that use a By object will examine the `browserName` capability of the current driver,
      * if it matches what you have specified here this locator will be used instead.
+     * The browserName check is case insensitive!
      * <p>
      * It is Suggested you pass in a org.openqa.selenium.remote.BrowserType object to ensure accuracy
      * (or if you are using Appium a io.appium.java_client.remote.MobileBrowserType, or io.appium.java_client.remoteMobilePlatform),
      * examples:
      * <p>
      * Query query = newQuery(By.id("foo");
-     * query.addAlternateLocator(BrowserType.GOOGLECHROME, By.id("bar");
-     * query.addAlternateLocator(MobileBrowserType.BROWSER, By.id("oof");
-     * query.addAlternateLocator(MobilePlatform.ANDROID, By.id("rab");
+     * query.addSpecificLocator(BrowserType.GOOGLECHROME, By.id("bar");
+     * query.addSpecificLocator(MobileBrowserType.BROWSER, By.id("oof");
+     * query.addSpecificLocator(MobilePlatform.ANDROID, By.id("rab");
      * <p>
      * This is intentionally a String for future compatibility.
      *
@@ -51,8 +52,8 @@ public class Query {
      * @param locator A By object used for locating webElements
      */
 
-    public Query addAlternateLocator(String browser, By locator) {
-        customLocators.put(browser, locator);
+    public Query addSpecificLocator(String browser, By locator) {
+        customLocators.put(browser.toUpperCase(), locator);
 
         return this;
     }
@@ -143,7 +144,7 @@ public class Query {
      */
     public By locator() {
         checkDriverIsSet();
-        By locatorToReturn = customLocators.getOrDefault(currentType, defaultLocator);
+        By locatorToReturn = customLocators.getOrDefault(currentType.toUpperCase(), defaultLocator);
 
         return checkLocatorIsNotNull(locatorToReturn);
     }

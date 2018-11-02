@@ -83,7 +83,27 @@ public class QueryTest {
 
         Query query = new Query().defaultLocator(DEFAULT_LOCATOR);
         initQueryObject(query);
-        query.addAlternateLocator(BrowserType.GOOGLECHROME, CHROME_LOCATOR);
+        query.addSpecificLocator(BrowserType.GOOGLECHROME, CHROME_LOCATOR);
+
+        assertThat(query.locator()).isEqualTo(CHROME_LOCATOR);
+    }
+
+    @Test
+    public void checkAlternateLocatorIsCaseInsensitiveWithUpper() {
+
+        Query query = new Query().defaultLocator(DEFAULT_LOCATOR);
+        initQueryObject(query);
+        query.addSpecificLocator(BrowserType.GOOGLECHROME.toUpperCase(), CHROME_LOCATOR);
+
+        assertThat(query.locator()).isEqualTo(CHROME_LOCATOR);
+    }
+
+    @Test
+    public void checkAlternateLocatorIsCaseInsensitiveWithLower() {
+
+        Query query = new Query().defaultLocator(DEFAULT_LOCATOR);
+        initQueryObject(query);
+        query.addSpecificLocator(BrowserType.GOOGLECHROME.toLowerCase(), CHROME_LOCATOR);
 
         assertThat(query.locator()).isEqualTo(CHROME_LOCATOR);
     }
@@ -93,7 +113,7 @@ public class QueryTest {
 
         Query query = new Query().defaultLocator(DEFAULT_LOCATOR);
         initQueryObject(query);
-        query.addAlternateLocator(BrowserType.FIREFOX, FIREFOX_LOCATOR);
+        query.addSpecificLocator(BrowserType.FIREFOX, FIREFOX_LOCATOR);
 
         assertThat(query.locator()).isEqualTo(DEFAULT_LOCATOR);
     }
@@ -227,7 +247,7 @@ public class QueryTest {
         RemoteWebDriver mockedWebDriver = mock(RemoteWebDriver.class);
         when(mockedWebDriver.getCapabilities()).thenReturn(mockedCapabilities);
 
-        Query query = new Query().addAlternateLocator(BrowserType.FIREFOX, FIREFOX_LOCATOR).usingDriver(mockedWebDriver);
+        Query query = new Query().addSpecificLocator(BrowserType.FIREFOX, FIREFOX_LOCATOR).usingDriver(mockedWebDriver);
         query.locator();
     }
 
@@ -241,7 +261,7 @@ public class QueryTest {
         RemoteWebDriver mockedWebDriver = mock(RemoteWebDriver.class);
         when(mockedWebDriver.getCapabilities()).thenReturn(mockedCapabilities);
 
-        Query query = new Query().addAlternateLocator(BrowserType.GOOGLECHROME, CHROME_LOCATOR).usingDriver(mockedWebDriver);
+        Query query = new Query().addSpecificLocator(BrowserType.GOOGLECHROME, CHROME_LOCATOR).usingDriver(mockedWebDriver);
         query.locator();
     }
 }
