@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.openqa.selenium.remote.CapabilityType.PLATFORM_NAME;
+
 public class Query {
 
     private RemoteWebDriver driver;
@@ -71,7 +73,7 @@ public class Query {
             isAppiumDriver = (null != automationName) && automationName.toString().toLowerCase().equals("appium");
             currentType = driver.getCapabilities().getBrowserName();
             if (isAppiumDriver && (null == currentType || currentType.isEmpty())) {
-                currentType = driver.getCapabilities().getPlatform().toString();
+                currentType = driver.getCapabilities().getCapability(PLATFORM_NAME).toString();
             }
         } else {
             throw new NullPointerException("Driver object is null!");

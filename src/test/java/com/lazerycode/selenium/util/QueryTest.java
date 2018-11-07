@@ -18,6 +18,7 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.openqa.selenium.remote.CapabilityType.PLATFORM_NAME;
 
 public class QueryTest {
 
@@ -198,7 +199,7 @@ public class QueryTest {
     private void initQueryObjectWithAppiumAndroid(Query queryObject) {
         Capabilities mockedCapabilities = mock(Capabilities.class);
         when(mockedCapabilities.getBrowserName()).thenReturn("");
-        when(mockedCapabilities.getPlatform()).thenReturn(Platform.fromString(MobilePlatform.ANDROID));
+        when(mockedCapabilities.getCapability(PLATFORM_NAME)).thenReturn(Platform.fromString(MobilePlatform.ANDROID));
         when(mockedCapabilities.getCapability("automationName")).thenReturn("Appium");
 
         RemoteWebDriver mockedWebDriver = mock(AndroidDriver.class);
@@ -212,7 +213,7 @@ public class QueryTest {
     private void initQueryWithGenericAutomationNameObject(Query queryObject) {
         Capabilities mockedCapabilities = mock(Capabilities.class);
         when(mockedCapabilities.getBrowserName()).thenReturn(BrowserType.GOOGLECHROME);
-        when(mockedCapabilities.getPlatform()).thenReturn(Platform.YOSEMITE);
+        when(mockedCapabilities.getCapability(PLATFORM_NAME)).thenReturn(Platform.YOSEMITE);
         when(mockedCapabilities.getCapability("automationName")).thenReturn("Generic");
 
         RemoteWebDriver mockedWebDriver = mock(RemoteWebDriver.class);
