@@ -50,6 +50,11 @@ for this to work you will need the following static import:
     
     import static com.lazerycode.selenium.util.AssignDriver.initQueryObjects;    
     
+Instead of using the constructor you can pass in an instance of your page object class:
+
+    SomePageObject somePageObject = new SomePageObject();
+    initQueryObjects(somePageObject, driver);
+
 This will scan the current class for valid Query objects and then assign the supplied driver object to each Query object.  This does need to be an instantiated driver object, passing in a null will result in an error.  You can then of course still modify the driver object assigned to a Query object at any point in the future using the `.usingDriver(driver)` command on individual Query objects.        
     
 ## OK, I have a query object. Now what?    

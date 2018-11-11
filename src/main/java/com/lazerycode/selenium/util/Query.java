@@ -146,7 +146,9 @@ public class Query {
      * @return By
      */
     public By by() {
-        checkDriverIsSet();
+        if (!driverIsSet()) {
+            throw new IllegalStateException("Driver object has not been set... You must call 'Query.initQueryObject(driver);'!");
+        }
         By locatorToReturn = customLocators.getOrDefault(currentType.toUpperCase(), defaultLocator);
 
         return checkLocatorIsNotNull(locatorToReturn);
@@ -160,12 +162,8 @@ public class Query {
         return locator;
     }
 
-    boolean checkDriverIsSet() {
-        if (null == driver) {
-            throw new IllegalStateException("Driver object has not been set... You must call 'Query.initQueryObject(driver);'!");
-        }
-
-        return true;
+    boolean driverIsSet() {
+        return null != driver;
     }
 
     @Override
