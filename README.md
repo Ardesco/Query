@@ -33,12 +33,12 @@ Or if you already have a driver object you can just do it all in one go:
 
     Query query = new Query().defaultLocator(By.id("foo")).usingDriver(driver);    
     
-Do you want to have different locators for different browsers?  You can add overrides for different browsers:
+Do you want to have different locators for different browsers?  You can add specific locators for different browsers:
 
-    query.addAlternateLocator(BrowserType.GOOGLECHROME, By.id("bar")
-       .addAlternateLocator("custom_driver", By.id("custom");
+    query.addSpecificLocator(BrowserType.GOOGLECHROME, By.id("bar")
+       .addSpecificLocator("custom_driver", By.id("custom");
     
-Once you have set custom locators the query object will check the desired capabilities of the current instantiated driver and just use the appropriate locator
+Once you have set specific locators the query object will check the desired capabilities of the current instantiated driver and just use the appropriate locator.  If it cannot find one it will drop back to the default locator.  If no appropriate locators are found it will throw a IllegalStateException. 
 
 ## Setting a driver object for every Query object is a real PITA, isn't there an easier way?
 
