@@ -38,7 +38,7 @@ public class QueryTest {
     @Test(expected = IllegalStateException.class)
     public void throwsIllegalStateExceptionWhenCallingLocatorWithNoInit() {
         Query query = new Query().defaultLocator(DEFAULT_LOCATOR);
-        query.locator();
+        query.by();
     }
 
     @Test(expected = IllegalStateException.class)
@@ -76,7 +76,7 @@ public class QueryTest {
         Query query = new Query().defaultLocator(DEFAULT_LOCATOR);
         initQueryObject(query);
 
-        assertThat(query.locator()).isEqualTo(DEFAULT_LOCATOR);
+        assertThat(query.by()).isEqualTo(DEFAULT_LOCATOR);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class QueryTest {
         initQueryObject(query);
         query.addSpecificLocator(BrowserType.GOOGLECHROME, CHROME_LOCATOR);
 
-        assertThat(query.locator()).isEqualTo(CHROME_LOCATOR);
+        assertThat(query.by()).isEqualTo(CHROME_LOCATOR);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class QueryTest {
         initQueryObject(query);
         query.addSpecificLocator(BrowserType.GOOGLECHROME.toUpperCase(), CHROME_LOCATOR);
 
-        assertThat(query.locator()).isEqualTo(CHROME_LOCATOR);
+        assertThat(query.by()).isEqualTo(CHROME_LOCATOR);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class QueryTest {
         initQueryObject(query);
         query.addSpecificLocator(BrowserType.GOOGLECHROME.toLowerCase(), CHROME_LOCATOR);
 
-        assertThat(query.locator()).isEqualTo(CHROME_LOCATOR);
+        assertThat(query.by()).isEqualTo(CHROME_LOCATOR);
     }
 
     @Test
@@ -116,7 +116,7 @@ public class QueryTest {
         initQueryObject(query);
         query.addSpecificLocator(BrowserType.FIREFOX, FIREFOX_LOCATOR);
 
-        assertThat(query.locator()).isEqualTo(DEFAULT_LOCATOR);
+        assertThat(query.by()).isEqualTo(DEFAULT_LOCATOR);
     }
 
     @Test
@@ -186,7 +186,7 @@ public class QueryTest {
     private void initQueryObject(Query queryObject) {
         Capabilities mockedCapabilities = mock(Capabilities.class);
         when(mockedCapabilities.getBrowserName()).thenReturn(BrowserType.GOOGLECHROME);
-        when(mockedCapabilities.getPlatform()).thenReturn(Platform.YOSEMITE);
+        when(mockedCapabilities.getCapability(PLATFORM_NAME)).thenReturn(Platform.YOSEMITE);
 
         RemoteWebDriver mockedWebDriver = mock(RemoteWebDriver.class);
         when(mockedWebDriver.getCapabilities()).thenReturn(mockedCapabilities);
@@ -228,41 +228,41 @@ public class QueryTest {
     public void throwsIllegalStateExceptionIfDefaultLocatorIsNull() {
         Capabilities mockedCapabilities = mock(Capabilities.class);
         when(mockedCapabilities.getBrowserName()).thenReturn(BrowserType.GOOGLECHROME);
-        when(mockedCapabilities.getPlatform()).thenReturn(Platform.YOSEMITE);
+        when(mockedCapabilities.getCapability(PLATFORM_NAME)).thenReturn(Platform.YOSEMITE);
         when(mockedCapabilities.getCapability("automationName")).thenReturn("Generic");
 
         RemoteWebDriver mockedWebDriver = mock(RemoteWebDriver.class);
         when(mockedWebDriver.getCapabilities()).thenReturn(mockedCapabilities);
 
         Query query = new Query().usingDriver(mockedWebDriver);
-        query.locator();
+        query.by();
     }
 
     @Test(expected = IllegalStateException.class)
     public void throwsIllegalStateExceptionIfDefaultLocatorIsNullAndCurrentTypeDoesNotMatch() {
         Capabilities mockedCapabilities = mock(Capabilities.class);
         when(mockedCapabilities.getBrowserName()).thenReturn(BrowserType.GOOGLECHROME);
-        when(mockedCapabilities.getPlatform()).thenReturn(Platform.YOSEMITE);
+        when(mockedCapabilities.getCapability(PLATFORM_NAME)).thenReturn(Platform.YOSEMITE);
         when(mockedCapabilities.getCapability("automationName")).thenReturn("Generic");
 
         RemoteWebDriver mockedWebDriver = mock(RemoteWebDriver.class);
         when(mockedWebDriver.getCapabilities()).thenReturn(mockedCapabilities);
 
         Query query = new Query().addSpecificLocator(BrowserType.FIREFOX, FIREFOX_LOCATOR).usingDriver(mockedWebDriver);
-        query.locator();
+        query.by();
     }
 
     @Test
     public void doesNotThrowIllegalStateExceptionIfDefaultLocatorIsNullAndCurrentTypeDoesMatch() {
         Capabilities mockedCapabilities = mock(Capabilities.class);
         when(mockedCapabilities.getBrowserName()).thenReturn(BrowserType.GOOGLECHROME);
-        when(mockedCapabilities.getPlatform()).thenReturn(Platform.YOSEMITE);
+        when(mockedCapabilities.getCapability(PLATFORM_NAME)).thenReturn(Platform.YOSEMITE);
         when(mockedCapabilities.getCapability("automationName")).thenReturn("Generic");
 
         RemoteWebDriver mockedWebDriver = mock(RemoteWebDriver.class);
         when(mockedWebDriver.getCapabilities()).thenReturn(mockedCapabilities);
 
         Query query = new Query().addSpecificLocator(BrowserType.GOOGLECHROME, CHROME_LOCATOR).usingDriver(mockedWebDriver);
-        query.locator();
+        query.by();
     }
 }

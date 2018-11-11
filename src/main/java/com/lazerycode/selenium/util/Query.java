@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.Select;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static org.openqa.selenium.remote.CapabilityType.PLATFORM_NAME;
 
@@ -21,7 +22,7 @@ public class Query {
     private boolean isAppiumDriver;
 
     /**
-     * Specify a default locator that will be used if a more specific locator cannot be detected.
+     * Specify a default by that will be used if a more specific by cannot be detected.
      *
      * @param locator
      * @return this
@@ -33,10 +34,10 @@ public class Query {
     }
 
     /**
-     * Specify a alternate locator for a specific browser.
+     * Specify a alternate by for a specific browser.
      * <p>
      * Any actions that use a By object will examine the `browserName` capability of the current driver,
-     * if it matches what you have specified here this locator will be used instead.
+     * if it matches what you have specified here this by will be used instead.
      * The browserName check is case insensitive!
      * <p>
      * It is Suggested you pass in a org.openqa.selenium.remote.BrowserType object to ensure accuracy
@@ -83,43 +84,43 @@ public class Query {
     }
 
     /**
-     * This will return a WebElement object if the supplied locator could find a valid WebElement.
+     * This will return a WebElement object if the supplied by could find a valid WebElement.
      *
      * @return WebElement
      */
     public WebElement findWebElement() {
-        return driver.findElement(locator());
+        return driver.findElement(by());
     }
 
     /**
-     * This will return a MobileElement object if the supplied locator could find a valid MobileElement.
+     * This will return a MobileElement object if the supplied by could find a valid MobileElement.
      *
      * @return MobileElement
      */
     public MobileElement findMobileElement() {
         if (isAppiumDriver) {
-            return (MobileElement) driver.findElement(locator());
+            return (MobileElement) driver.findElement(by());
         }
         throw new UnsupportedOperationException("You don't seem to be using Appium!");
     }
 
     /**
-     * This will return a list of WebElement objects, it may be empty if the supplied locator does not match any elements on screen
+     * This will return a list of WebElement objects, it may be empty if the supplied by does not match any elements on screen
      *
      * @return List&lt;WebElement>&gt;
      */
     public List<WebElement> findWebElements() {
-        return driver.findElements(locator());
+        return driver.findElements(by());
     }
 
     /**
-     * This will return a list of MobileElement objects, it may be empty if the supplied locator does not match any elements on screen
+     * This will return a list of MobileElement objects, it may be empty if the supplied by does not match any elements on screen
      *
      * @return List&lt;MobileElement>&gt;
      */
     public List<MobileElement> findMobileElements() {
         if (isAppiumDriver) {
-            List<WebElement> elementsFound = driver.findElements(locator());
+            List<WebElement> elementsFound = driver.findElements(by());
             List<MobileElement> mobileElementsToReturn = new ArrayList<>();
             for (WebElement element : elementsFound) {
                 mobileElementsToReturn.add((MobileElement) element);
@@ -130,7 +131,7 @@ public class Query {
     }
 
     /**
-     * This will return a Select object if the supplied locator could find a valid WebElement.
+     * This will return a Select object if the supplied by could find a valid WebElement.
      *
      * @return Select
      */
@@ -139,12 +140,12 @@ public class Query {
     }
 
     /**
-     * This will return the locator currently associated with your driver object.
+     * This will return the by currently associated with your driver object.
      * This is useful for passing into ExpectedConditions
      *
      * @return By
      */
-    public By locator() {
+    public By by() {
         checkDriverIsSet();
         By locatorToReturn = customLocators.getOrDefault(currentType.toUpperCase(), defaultLocator);
 
@@ -153,15 +154,34 @@ public class Query {
 
     private By checkLocatorIsNotNull(By locator) {
         if (null == locator) {
-            throw new IllegalStateException(String.format("Unable to detect valid locator for '%s' and a default locator has not been set!", currentType));
+            throw new IllegalStateException(String.format("Unable to detect valid by for '%s' and a default by has not been set!", currentType));
         }
 
         return locator;
     }
 
-    private void checkDriverIsSet() {
+    boolean checkDriverIsSet() {
         if (null == driver) {
             throw new IllegalStateException("Driver object has not been set... You must call 'Query.initQueryObject(driver);'!");
         }
+
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Query query = (Query) o;
+        return isAppiumDriver == query.isAppiumDriver &&
+                Objects.equals(driver, query.driver) &&
+                Objects.equals(currentType, query.currentType) &&
+                Objects.equals(defaultLocator, query.defaultLocator) &&
+                Objects.equals(customLocators, query.customLocators);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(driver, currentType, defaultLocator, customLocators, isAppiumDriver);
     }
 }

@@ -38,7 +38,15 @@ Do you want to have different locators for different browsers?  You can add over
     query.addAlternateLocator(BrowserType.GOOGLECHROME, By.id("bar")
        .addAlternateLocator("custom_driver", By.id("custom");
     
-Once you have set custom locators the query object will check the desired capabilities of the current instantiated driver and just use the appropriate locator    
+Once you have set custom locators the query object will check the desired capabilities of the current instantiated driver and just use the appropriate locator
+
+## Setting a driver object for every Query object is a real PITA, isn't there an easier way?
+
+Instead of passing a `.usingDriver(driver)` command to each driver object you can instead put the following code into your constructor:
+
+    initQueryObjects(this, driver);
+    
+This will scan the current class for valid Query objects and then assign the supplied driver object to each Query object.  This does need to be an instantiated driver object, passing in a null will result in an error.  You can then of course still modify the driver object assigned to a Query object at any point in the future using the `.usingDriver(driver)` command on individual Query objects.        
     
 ## OK, I have a query object. Now what?    
 
@@ -55,6 +63,6 @@ Ok, that's kind of useful, anything else?
 Have you ever got frustrated trying to get locators out of element to use in expected conditions?  No longer a problem:
 
     WebDriverWait wait = new WebDriverWait(driver, 15, 100);
-    wait.until(ExpectedConditions.visibilityOfElementLocated(query.locator));
+    wait.until(ExpectedConditions.visibilityOfElementLocated(query.by()));
     
 That's all for now, if you can think of any useful additions just raise an issue.    
