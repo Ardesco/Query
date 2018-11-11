@@ -22,7 +22,7 @@ public class Query {
     private boolean isAppiumDriver;
 
     /**
-     * Specify a default by that will be used if a more specific by cannot be detected.
+     * Specify a default locator that will be used if a more specific by cannot be detected.
      *
      * @param locator
      * @return this
@@ -34,11 +34,11 @@ public class Query {
     }
 
     /**
-     * Specify a alternate by for a specific browser.
+     * Specify a alternate locator for a specific browser/device type.
      * <p>
-     * Any actions that use a By object will examine the `browserName` capability of the current driver,
+     * Any actions that use a By object will examine the `browserName` or `PLATFORM_NAME` capability of the current driver,
      * if it matches what you have specified here this by will be used instead.
-     * The browserName check is case insensitive!
+     * The browserName/PLATFORM_NAME check is case insensitive!
      * <p>
      * It is Suggested you pass in a org.openqa.selenium.remote.BrowserType object to ensure accuracy
      * (or if you are using Appium a io.appium.java_client.remote.MobileBrowserType, or io.appium.java_client.remoteMobilePlatform),
@@ -84,7 +84,7 @@ public class Query {
     }
 
     /**
-     * This will return a WebElement object if the supplied by could find a valid WebElement.
+     * This will return a WebElement object if the supplied locator could find a valid WebElement.
      *
      * @return WebElement
      */
@@ -93,7 +93,7 @@ public class Query {
     }
 
     /**
-     * This will return a MobileElement object if the supplied by could find a valid MobileElement.
+     * This will return a MobileElement object if the supplied locator could find a valid MobileElement.
      *
      * @return MobileElement
      */
@@ -105,7 +105,7 @@ public class Query {
     }
 
     /**
-     * This will return a list of WebElement objects, it may be empty if the supplied by does not match any elements on screen
+     * This will return a list of WebElement objects, it may be empty if the supplied locator does not match any elements on screen
      *
      * @return List&lt;WebElement>&gt;
      */
@@ -114,7 +114,7 @@ public class Query {
     }
 
     /**
-     * This will return a list of MobileElement objects, it may be empty if the supplied by does not match any elements on screen
+     * This will return a list of MobileElement objects, it may be empty if the supplied locator does not match any elements on screen
      *
      * @return List&lt;MobileElement>&gt;
      */
@@ -131,7 +131,7 @@ public class Query {
     }
 
     /**
-     * This will return a Select object if the supplied by could find a valid WebElement.
+     * This will return a Select object if the supplied locator could find a valid WebElement.
      *
      * @return Select
      */
@@ -140,7 +140,7 @@ public class Query {
     }
 
     /**
-     * This will return the by currently associated with your driver object.
+     * This will return the By object currently associated with your driver object.
      * This is useful for passing into ExpectedConditions
      *
      * @return By

@@ -7,21 +7,18 @@ import java.lang.reflect.Field;
 public class AssignDriver {
     public static void initQueryObjects(Object object, RemoteWebDriver driver) {
         Class<?> clazz = object.getClass();
-//        Object obj = null;
-        try {
-//            obj = clazz.newInstance();
-            Field[] fields = clazz.getDeclaredFields();
-            for (Field field : fields) {
-                if (field.getType() == Query.class) {
-                    field.setAccessible(true);
+        for (Field field : clazz.getDeclaredFields()) {
+            if (field.getType() == Query.class) {
+                field.setAccessible(true);
+                try {
                     Query queryObject = (Query) field.get(object);
                     if (null != queryObject) {
                         queryObject.usingDriver(driver);
                     }
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
                 }
             }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
         }
     }
 }
