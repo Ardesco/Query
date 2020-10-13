@@ -57,7 +57,7 @@
         <!--Dependency Versions-->
         <appium-java-client.version>6.1.0</appium-java-client.version>
         <assertj-core.version>3.8.0</assertj-core.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <mockito-core.version>2.11.0</mockito-core.version>
         <selenium.version>3.141.0</selenium.version>
         <!--Plugin Versions-->
