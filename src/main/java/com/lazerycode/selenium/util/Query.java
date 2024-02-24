@@ -18,13 +18,13 @@ public class Query {
     private RemoteWebDriver driver;
     private String currentType;
     private By defaultLocator;
-    private HashMap<String, By> customLocators = new HashMap<>();
+    private final HashMap<String, By> customLocators = new HashMap<>();
     private boolean isAppiumDriver;
 
     /**
      * Specify a default locator that will be used if a more specific by cannot be detected.
      *
-     * @param locator
+     * @param locator A By object used for locating webElements
      * @return this
      */
     public Query defaultLocator(By locator) {
@@ -64,14 +64,14 @@ public class Query {
     /**
      * Specify the driver object that will be used to find elements
      *
-     * @param driverObject
+     * @param driverObject A RemoteWebdriverObject or something that extends RemoteWebDriver
      * @return this
      */
     public Query usingDriver(RemoteWebDriver driverObject) {
         if (null != driverObject) {
             driver = driverObject;
             Object automationName = driver.getCapabilities().getCapability("automationName");
-            isAppiumDriver = (null != automationName) && automationName.toString().toLowerCase().equals("appium");
+            isAppiumDriver = (null != automationName) && automationName.toString().equalsIgnoreCase("appium");
             currentType = driver.getCapabilities().getBrowserName();
             if (isAppiumDriver && (null == currentType || currentType.isEmpty())) {
                 currentType = driver.getCapabilities().getCapability(PLATFORM_NAME).toString();
@@ -81,6 +81,15 @@ public class Query {
         }
 
         return this;
+    }
+
+    /**
+     * This will return a WebElement object if the supplied locator could find a valid WebElement.
+     *
+     * @return WebElement
+     */
+    public WebElement find() {
+        return findWebElement();
     }
 
     /**
@@ -102,6 +111,15 @@ public class Query {
             return (MobileElement) driver.findElement(by());
         }
         throw new UnsupportedOperationException("You don't seem to be using Appium!");
+    }
+
+    /**
+     * This will return a list of WebElement objects, it may be empty if the supplied locator does not match any elements on screen
+     *
+     * @return List&lt;WebElement>&gt;
+     */
+    public List<WebElement> findAll() {
+        return driver.findElements(by());
     }
 
     /**

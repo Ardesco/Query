@@ -130,11 +130,31 @@ public class QueryTest {
     }
 
     @Test
+    public void findReturnsWebElement() {
+
+        Query query = new Query().defaultLocator(DEFAULT_LOCATOR);
+        initQueryObject(query);
+        WebElement element = query.find();
+
+        assertThat(element).isEqualTo(MOCKED_WEB_ELEMENT_FOR_DEFAULT);
+    }
+
+    @Test
     public void returnsWebElementList() {
 
         Query query = new Query().defaultLocator(DEFAULT_LOCATOR);
         initQueryObject(query);
         List<WebElement> element = query.findWebElements();
+
+        assertThat(element).isEqualTo(MOCKED_WEB_ELEMENT_LIST_FOR_DEFAULT);
+    }
+
+    @Test
+    public void allReturnsWebElementList() {
+
+        Query query = new Query().defaultLocator(DEFAULT_LOCATOR);
+        initQueryObject(query);
+        List<WebElement> element = query.findAll();
 
         assertThat(element).isEqualTo(MOCKED_WEB_ELEMENT_LIST_FOR_DEFAULT);
     }
