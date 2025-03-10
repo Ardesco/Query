@@ -86,7 +86,7 @@ public class EqualsAndHashCodeTest {
     public void equalsDriver() {
         Capabilities mockedCapabilities = mock(Capabilities.class);
         when(mockedCapabilities.getBrowserName()).thenReturn(BrowserType.GOOGLECHROME);
-        when(mockedCapabilities.getCapability(PLATFORM_NAME)).thenReturn(Platform.YOSEMITE);
+        when(mockedCapabilities.getCapability("automationName")).thenReturn(Platform.YOSEMITE);
 
         RemoteWebDriver mockedWebDriver = mock(RemoteWebDriver.class);
         when(mockedWebDriver.getCapabilities()).thenReturn(mockedCapabilities);
@@ -104,7 +104,7 @@ public class EqualsAndHashCodeTest {
     public void notEqualsDriver() {
         Capabilities mockedWebDriverCapabilities = mock(Capabilities.class);
         when(mockedWebDriverCapabilities.getBrowserName()).thenReturn(BrowserType.GOOGLECHROME);
-        when(mockedWebDriverCapabilities.getCapability(PLATFORM_NAME)).thenReturn(Platform.YOSEMITE);
+        when(mockedWebDriverCapabilities.getCapability("automationName")).thenReturn(Platform.YOSEMITE);
 
         RemoteWebDriver mockedWebDriver = mock(RemoteWebDriver.class);
         when(mockedWebDriver.getCapabilities()).thenReturn(mockedWebDriverCapabilities);
